@@ -24,7 +24,12 @@ class MainActivity : AppCompatActivity() {
 
         val saveData = DataBase(this)
         submit.setOnClickListener {
-            saveData.addAccount(userName.toString(),password.toString(),accNo.toString().toInt(),cash.toString().toInt())
+            val userNameString = userName.text.toString()
+            val passwordString = password.text.toString()
+            val accNoInt = accNo.text.toString().toIntOrNull()
+            val cashInt = cash.text.toString().toIntOrNull()
+
+            saveData.addAccount(userNameString, passwordString, accNoInt, cashInt)
 
             Toast.makeText(this, "Data submitted!", Toast.LENGTH_SHORT).show()
         }

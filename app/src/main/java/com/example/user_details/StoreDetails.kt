@@ -1,29 +1,35 @@
 package com.example.user_details
 
-class StoreDetails(val name: String, val pass: String, val acNo: Int, val cashh: Int){
+class StoreDetails(val id: Int,val name: String, val pass: String, val acNo: Int, val cashh: Int){
 
-     var userName: String
-     var password: String
-     var accNo: Int
-     var cash: Int
+     var userID: Int
+     var _userName: String
+     var _password: String
+     var _accNo: Int
+     var _cash: Int
 
     init {
-        userName = name
-        password = pass
-        accNo = acNo
-        cash = cashh
+         userID = id
+        _userName = name
+        _password = pass
+        _accNo = acNo
+        _cash = cashh
+    }
+
+    fun getUserID(): Int {
+        return userID
     }
 
     fun getUserName(): String {
-        return userName
+        return _userName
     }
     fun getPassword(): String {
-        return password
+        return _password
     }
     fun getAccountNo(): Int {
-        return accNo
+        return _accNo
     }
     fun getCash(): Int {
-        return cash
+        return _cash
     }
 }
