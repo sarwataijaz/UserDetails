@@ -16,7 +16,7 @@ class StoreDetails(val id: Int,val name: String, val pass: String, val acNo: Int
         _cash = cashh
     }
 
-    fun getUserID(): Int {
+    fun getID(): Int {
         return userID
     }
 

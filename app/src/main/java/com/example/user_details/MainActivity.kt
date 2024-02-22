@@ -23,15 +23,19 @@ class MainActivity : AppCompatActivity() {
         val view: Button = findViewById(R.id.view)
 
         val saveData = DataBase(this)
+
         submit.setOnClickListener {
             val userNameString = userName.text.toString()
             val passwordString = password.text.toString()
             val accNoInt = accNo.text.toString().toIntOrNull()
             val cashInt = cash.text.toString().toIntOrNull()
 
-            saveData.addAccount(userNameString, passwordString, accNoInt, cashInt)
-
-            Toast.makeText(this, "Data submitted!", Toast.LENGTH_SHORT).show()
+            if(userNameString.isEmpty() || passwordString.isEmpty() || accNoInt == null || cashInt == null) {
+                Toast.makeText(this, "Please enter all data", Toast.LENGTH_SHORT).show()
+            } else {
+                saveData.addAccount(userNameString, passwordString, accNoInt, cashInt)
+                Toast.makeText(this, "Data submitted!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         view.setOnClickListener {

@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import android.widget.Toast
 
 class DataBase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
@@ -39,6 +40,11 @@ class DataBase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_V
         // pass the details of the database
     }
 
+    public fun deleteAllData() {
+        val db = this.writableDatabase
+        db.delete(TABLE_NAME, null, null)
+        db.close()
+    }
     override fun onCreate(db: SQLiteDatabase) {
         val query =
             "CREATE TABLE $TABLE_NAME ( $ID_COL INTEGER PRIMARY KEY, $NAME_COL TEXT, $PASSWORD_COL TEXT, $ACCOUNT_COL INTEGER, $CASH_COL INTEGER) "
@@ -58,7 +64,7 @@ class DataBase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_V
         values.put(CASH_COL,cash)
 
          // The second argument tells the framework what to do in the event that the ContentValues is empty (i.e., you did not put any values). If you specify the name of a column, the framework inserts a row and sets the value of that column to null. If you specify null, like in this code sample, the framework does not insert a row when there are no values.
-        val newRowID = db.insert(TABLE_NAME,null,values)
+        val newRowID = db.insert(TABLE_NAME,null,values) // auto-increment, primary key ID will keep increasing no matter if data is deleted
         Log.d("Primary key:", newRowID.toString())
         db.close()
     }
@@ -90,27 +96,21 @@ class DataBase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_V
         return recordsList
     }
 
-    fun deleteRecord(primaryKey: Int) {
+    fun deleteRecord(primaryKey: Int): Boolean {
         val db = writableDatabase
-        val primaryKeyValue = 1 // Example primary key value of the record you want to delete
+        // Example primary key value of the record you want to delete
 
 // Delete the record with the specified primary key value
-        val rowsAffected = db.delete(TABLE_NAME, "$NAME_COL = ?", arrayOf(primaryKeyValue.toString()))
+        val rowsAffected = db.delete(TABLE_NAME, "$ID_COL = ?", arrayOf(primaryKey.toString()))
 
         db.close()
 
 // Check if the deletion was successful
-        if (rowsAffected > 0) {
-            // Deletion was successful
-        } else {
-            // No record was deleted (perhaps the record with the specified primary key value doesn't exist)
-        }
+        return rowsAffected > 0
     }
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME"); // delete all
         onCreate(db);
     }
-
-
 
 }
