@@ -113,4 +113,19 @@ class DataBase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_V
         onCreate(db);
     }
 
+    fun updateRecord(primaryKey: Int, userName: String, password: String, accNo: Int?, cash: Int?): Boolean {
+
+        val db = this.writableDatabase
+
+        val values = ContentValues()
+
+        values.put(NAME_COL, userName)
+        values.put(PASSWORD_COL,password)
+        values.put(ACCOUNT_COL,accNo)
+        values.put(CASH_COL,cash)
+
+        val updatedRows = db.update(TABLE_NAME,values,"$ID_COL = ?", arrayOf(primaryKey.toString()))
+
+        return (updatedRows>0)
+    }
 }
