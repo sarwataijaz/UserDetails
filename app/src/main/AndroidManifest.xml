@@ -22,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.user_details.ViewCourses" />
+        <activity android:name="com.example.user_details.ViewCoursesActivity" />
     </application>
 
 </manifest>

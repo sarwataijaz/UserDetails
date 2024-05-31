@@ -1,6 +1,6 @@
 package com.example.user_details
 
-class StoreDetails(val id: Int,val name: String, val pass: String, val acNo: Int, val cashh: Int){
+data class StoreDetails(val id: Int,val name: String, val pass: String, val acNo: Int, val cashh: Int){
 
      var userID: Int
      var _userName: String

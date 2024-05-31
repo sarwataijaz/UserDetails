@@ -1,48 +1,40 @@
 package com.example.user_details
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
+import androidx.activity.viewModels
 import android.widget.Toast
+import com.example.user_details.databinding.ActivityMainBinding
+import com.example.user_details.viewModel.UserViewModel
 
 // : Annotations can provide compiler instructions or hints about how code should be processed. For example, annotations can influence how code is optimized, how warnings or errors are handled, or how code is generated.
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+    private val viewModel: UserViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val userName: EditText = findViewById(R.id.userName)
-        val password: EditText = findViewById(R.id.password)
-        val accNo: EditText = findViewById(R.id.accNo)
-        val cash: EditText =  findViewById(R.id.cash)
-
-        val submit: Button = findViewById(R.id.submit)
-        val view: Button = findViewById(R.id.view)
-
-        val saveData = DataBase(this)
-
-        submit.setOnClickListener {
-            val userNameString = userName.text.toString()
-            val passwordString = password.text.toString()
-            val accNoInt = accNo.text.toString().toIntOrNull()
-            val cashInt = cash.text.toString().toIntOrNull()
+        binding.submit.setOnClickListener {
+            val userNameString = binding.userName.text.toString()
+            val passwordString = binding.password.text.toString()
+            val accNoInt = binding.accNo.text.toString().toIntOrNull()
+            val cashInt = binding.cash.text.toString().toIntOrNull()
 
             if(userNameString.isEmpty() || passwordString.isEmpty() || accNoInt == null || cashInt == null) {
                 Toast.makeText(this, "Please enter all data", Toast.LENGTH_SHORT).show()
             } else {
-                saveData.addAccount(userNameString, passwordString, accNoInt, cashInt)
+                viewModel.addAccount(userNameString, passwordString, accNoInt, cashInt)
                 Toast.makeText(this, "Data submitted!", Toast.LENGTH_SHORT).show()
             }
         }
 
-        view.setOnClickListener {
-            Intent(this,ViewCourses::class.java).also {
+        binding.view.setOnClickListener {
+            Intent(this,ViewCoursesActivity::class.java).also {
                 startActivity(it)
             }
         }
     }
-
 }

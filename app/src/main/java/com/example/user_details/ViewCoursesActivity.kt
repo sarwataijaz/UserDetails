@@ -4,27 +4,25 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.user_details.databinding.ActivityMainBinding
+import com.example.user_details.databinding.ActivityViewCoursesBinding
+import com.example.user_details.viewModel.UserViewModel
 
-class ViewCourses : AppCompatActivity() {
+class ViewCoursesActivity : AppCompatActivity() {
 
-    private lateinit var mainLayout: LinearLayout
-    private lateinit var data1: TextView
-    private lateinit var cross: ImageView
+    private lateinit var binding: ActivityViewCoursesBinding
+    private val viewModel: UserViewModel by viewModels()
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_data)
+        setContentView(R.layout.activity_view_courses)
 
-        mainLayout = findViewById(R.id.mainLayout)
-        data1 = findViewById(R.id.data1)
-
-        val db = DataBase(this)
-        val records = db.getDetails()
+        val records = viewModel.getDetails()
 
         for (record in records) {
             val textView = TextView(this)
@@ -33,23 +31,24 @@ class ViewCourses : AppCompatActivity() {
                     "Password: ${record.getPassword()}\n" +
                     "AccountNo: ${record.getAccountNo()}\n" +
                     "Cash: ${record.getCash()}\n"
+
             val image = ImageView(this)
             image.setImageResource(android.R.drawable.btn_dialog)
 
             image.setOnClickListener {
-                val isDeleted = db.deleteRecord(record.getID())
+                val isDeleted = viewModel.deleteRecord(record.getID())
 
                 if(isDeleted) {
-                    mainLayout.removeView(textView)
-                    mainLayout.removeView(image)
+                    binding.mainLayout.removeView(textView)
+                    binding.mainLayout.removeView(image)
                     Toast.makeText(this, "Record removed successfully!", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "Error removing the record from database", Toast.LENGTH_SHORT).show()
                 }
 
             }
-            mainLayout.addView(textView)
-            mainLayout.addView(image)
+            binding.mainLayout.addView(textView)
+            binding.mainLayout.addView(image)
         }
     }
 }
